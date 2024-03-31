@@ -39,11 +39,11 @@ public class MapAtlasesClientConfig {
 
         miniMapHorizontalOffset = builder
                 .comment("An integer which will offset the mini-map horizontally")
-                .define("horizontal_offset", 5, -4000, 4000);
+                .define("horizontal_offset", 0, -4000, 4000);
 
         miniMapVerticalOffset = builder
                 .comment("An integer which will offset the mini-map vertically")
-                .define("vertical_offset", 5, -4000, 4000);
+                .define("vertical_offset", 0, -4000, 4000);
 
         activePotionVerticalOffset = builder
                 .comment("The number of pixels to shift vertically when there's an active effect")

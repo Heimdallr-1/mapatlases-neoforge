@@ -23,7 +23,7 @@ public class MapAtlasesAccessUtils {
 
 
     public static boolean isValidFilledMap(ItemStack item) {
-        return MapType.fromItem(item.getItem()) != null;
+        return MapType.fromItem(item.getItem()) != null && MapItem.getMapId(item) != null;
     }
 
     public static boolean isValidEmptyMap(ItemStack item) {

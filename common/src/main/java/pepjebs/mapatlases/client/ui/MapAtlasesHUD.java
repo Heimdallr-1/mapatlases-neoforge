@@ -41,7 +41,7 @@ import java.util.Objects;
 
 import static pepjebs.mapatlases.client.screen.DecorationBookmarkButton.MAP_ICON_TEXTURE;
 
-public class MapAtlasesHUD extends AbstractAtlasWidget   {
+public class MapAtlasesHUD extends AbstractAtlasWidget {
 
     public static final ResourceLocation MAP_BACKGROUND = MapAtlasesMod.res("textures/gui/hud/map_background.png");
     public static final ResourceLocation MAP_FOREGROUND = MapAtlasesMod.res("textures/gui/hud/map_foreground.png");
@@ -143,12 +143,12 @@ public class MapAtlasesHUD extends AbstractAtlasWidget   {
                         (float) (double) MapAtlasesClientConfig.soundScalar.get(), 1.0F);
             }
         }
-
         int mapWidgetSize = (int) (BG_SIZE * (116 / 128f));
         // Draw map background
-        Anchoring anchorLocation = MapAtlasesClientConfig.miniMapAnchoring.get();
-        int x = anchorLocation.isLeft ? 0 : (int) (screenWidth / globalScale) - BG_SIZE;
-        int y = anchorLocation.isUp ? 0 : (int) (screenHeight / globalScale) - BG_SIZE;
+        Anchoring anchorLocation = Anchoring.LOWER_RIGHT;// MapAtlasesClientConfig.miniMapAnchoring.get();
+        int off = 5;
+        int x = anchorLocation.isLeft ? off : (int) (screenWidth / (globalScale)) - (BG_SIZE + off);
+        int y = anchorLocation.isUp ? off : (int) (screenHeight / (globalScale)) - (BG_SIZE + off);
         x += MapAtlasesClientConfig.miniMapHorizontalOffset.get() / globalScale;
         y += MapAtlasesClientConfig.miniMapVerticalOffset.get() / globalScale;
 
@@ -171,8 +171,6 @@ public class MapAtlasesHUD extends AbstractAtlasWidget   {
                 y += (offsetForEffects - y);
             }
         }
-
-
 
 
         // Draw map data
@@ -199,7 +197,7 @@ public class MapAtlasesHUD extends AbstractAtlasWidget   {
                 LightTexture.pack(0, level.getBrightness(LightLayer.SKY, player.getOnPos().above()));
         int borderSize = (BG_SIZE - mapWidgetSize) / 2;
 
-       // RenderSystem.enableDepthTest();
+        // RenderSystem.enableDepthTest();
 
         drawAtlas(graphics, x + borderSize, y + borderSize,
                 mapWidgetSize, mapWidgetSize, player,
@@ -207,13 +205,12 @@ public class MapAtlasesHUD extends AbstractAtlasWidget   {
                 MapAtlasesClientConfig.miniMapBorder.get(), currentMapKey.slice().type(), light);
 
 
-
         // Draws background, player icon, cardinal dir, pos and direction
 
         if (MapAtlasesMod.IMMEDIATELY_FAST) ImmediatelyFastCompat.startBatching();
 
         RenderSystem.enableDepthTest();
-        graphics.blit(MAP_BACKGROUND, x, y,-2,0,0, BG_SIZE, BG_SIZE,
+        graphics.blit(MAP_BACKGROUND, x, y, -2, 0, 0, BG_SIZE, BG_SIZE,
                 BG_SIZE, BG_SIZE);
         RenderSystem.disableDepthTest();
 
@@ -244,10 +241,14 @@ public class MapAtlasesHUD extends AbstractAtlasWidget   {
         int textHeightOffset = 2;
         int actualBgSize = (int) (BG_SIZE * globalScale);
 
+        poseStack.pushPose();
+        if (!anchorLocation.isUp) poseStack.translate(0, -BG_SIZE - 20 * textScaling - 2, 0);
+
         Font font = mc.font;
         boolean global = MapAtlasesClientConfig.drawMinimapCoords.get();
         boolean local = MapAtlasesClientConfig.drawMinimapChunkCoords.get();
         if (global || local) {
+
             BlockPos pos = new BlockPos(new Vec3i(
                     towardsZero(player.position().x),
                     towardsZero(player.position().y),
@@ -270,7 +271,9 @@ public class MapAtlasesHUD extends AbstractAtlasWidget   {
             drawMapComponentBiome(
                     graphics, font, x, (int) (y + BG_SIZE + (textHeightOffset / globalScale)), actualBgSize,
                     textScaling, player.blockPosition(), level);
+
         }
+        poseStack.popPose();
 
         if (MapAtlasesClientConfig.drawMinimapCardinals.get()) {
             poseStack.pushPose();
@@ -288,6 +291,7 @@ public class MapAtlasesHUD extends AbstractAtlasWidget   {
 
             poseStack.popPose();
         }
+
 
         if (MapAtlasesMod.MOONLIGHT && MapAtlasesClientConfig.moonlightPinTracking.get()) {
             poseStack.pushPose();
