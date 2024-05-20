@@ -28,7 +28,7 @@ public class MapAtlasesClientImpl {
 
     private static void onRenderHud(GuiGraphics graphics, float partialTicks) {
         Window window = Minecraft.getInstance().getWindow();
-        HUD.render(graphics, partialTicks, window.getScreenWidth(), window.getScreenHeight());
+        HUD.render(graphics, partialTicks, window.getGuiScaledWidth(), window.getGuiScaledHeight());
     }
 
     private static void mapAtlasClientTick(Minecraft minecraft) {

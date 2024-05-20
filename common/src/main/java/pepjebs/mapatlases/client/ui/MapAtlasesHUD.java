@@ -145,15 +145,16 @@ public class MapAtlasesHUD extends AbstractAtlasWidget {
         }
         int mapWidgetSize = (int) (BG_SIZE * (116 / 128f));
         // Draw map background
-        Anchoring anchorLocation = Anchoring.LOWER_RIGHT;// MapAtlasesClientConfig.miniMapAnchoring.get();
+        Anchoring anchorLocation = MapAtlasesClientConfig.miniMapAnchoring.get();
         int off = 5;
+
         int x = anchorLocation.isLeft ? off : (int) (screenWidth / (globalScale)) - (BG_SIZE + off);
         int y = anchorLocation.isUp ? off : (int) (screenHeight / (globalScale)) - (BG_SIZE + off);
         x += MapAtlasesClientConfig.miniMapHorizontalOffset.get() / globalScale;
         y += MapAtlasesClientConfig.miniMapVerticalOffset.get() / globalScale;
 
         //TODO: fix rounding error when at non integer scales
-        if (anchorLocation.isUp && !anchorLocation.isLeft) {
+        if (anchorLocation == Anchoring.UPPER_RIGHT) {
             boolean hasBeneficial = false;
             boolean hasNegative = false;
             for (var e : player.getActiveEffects()) {
@@ -189,6 +190,7 @@ public class MapAtlasesHUD extends AbstractAtlasWidget {
 
         // Set zoom-height for map icons
         MapAtlasesClient.setDecorationsScale((float) (2 * zoomLevel * MapAtlasesClientConfig.miniMapDecorationScale.get()));
+        MapAtlasesClient.setDecorationsTextScale((float) (2 * zoomLevel * MapAtlasesClientConfig.miniMapDecorationTextScale.get()));
         float yRot = player.getYRot();
         if (rotatesWithPlayer) {
             MapAtlasesClient.setDecorationRotation(yRot - 180);
@@ -216,6 +218,8 @@ public class MapAtlasesHUD extends AbstractAtlasWidget {
 
 
         MapAtlasesClient.setDecorationsScale(1);
+        MapAtlasesClient.setDecorationsTextScale(1);
+
         if (rotatesWithPlayer) {
             MapAtlasesClient.setDecorationRotation(0);
         }

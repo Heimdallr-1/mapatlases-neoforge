@@ -68,6 +68,9 @@ public class MapAtlasesClientConfig {
                 .comment("Sets the scale of the map icons rendered in the mini-map")
                 .define("decoration_scale", 1, 0, 10d);
 
+        miniMapDecorationTextScale = builder.comment("Scale multiplier for Map Markers text on the mini-map")
+                .define("map_markers_text_scale", 1, 0, 10f);
+
         miniMapFollowPlayer = builder.comment("Allows minimap to follow player movement instead of only displaying current map")
                 .define("follow_player", true);
 
@@ -125,6 +128,9 @@ public class MapAtlasesClientConfig {
                 .comment("Sets the scale of the map icons rendered in the world-map")
                 .define("decoration_scale", 1, 0, 10d);
 
+        worldMapDecorationTextScale = builder.comment("Scale multiplier for Map Markers text on the world-map")
+                .define("map_markers_text_scale", 1, 0, 10f);
+
         worldMapCompactSliceIndicator = builder
                 .comment("Rearranges the position of the slice indicator to be more compact. You will need supplementaries slice maps to use this")
                 .define("compact_slices_indicator", false);
@@ -141,11 +147,6 @@ public class MapAtlasesClientConfig {
 
         inHandMode = builder.comment("Render atlas like normal map when in hand")
                 .define("in_hand_renderer", InHandMode.NOT_LOCKED);
-
-        markersScale = builder.comment("Scale multiplier for Map Markers on the atlas")
-                        .define("map_markers_scale", 1, 0, 10f);
-        markersTextScale = builder.comment("Scale multiplier for Map Markers text on the atlas")
-                .define("map_markers_text_scale", 1, 0, 10f);
 
         builder.pop();
 
@@ -193,7 +194,9 @@ public class MapAtlasesClientConfig {
     public static final Supplier<Double> minimapCoordsAndBiomeScale;
     public static final Supplier<Double> worldMapCoordsScale;
     public static final Supplier<Double> miniMapDecorationScale;
+    public static final Supplier<Double> miniMapDecorationTextScale;
     public static final Supplier<Double> worldMapDecorationScale;
+    public static final Supplier<Double> worldMapDecorationTextScale;
     public static final Supplier<Double> soundScalar;
     public static final Supplier<Boolean> worldMapCompactSliceIndicator;
     public static final Supplier<Boolean> miniMapRotate;
@@ -207,8 +210,6 @@ public class MapAtlasesClientConfig {
     public static final Supplier<Boolean> worldMapCrossair;
     public static final Supplier<Boolean> hideWhenInHand;
     public static final Supplier<InHandMode> inHandMode;
-    public static final Supplier<Double> markersScale;
-    public static final Supplier<Double> markersTextScale;
     public static final Supplier<Double> miniMapScale;
     public static final Supplier<Double> worldMapScale;
     public static final Supplier<Double> lecternWorldMapScale;

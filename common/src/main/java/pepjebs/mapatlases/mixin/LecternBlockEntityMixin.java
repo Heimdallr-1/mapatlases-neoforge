@@ -2,6 +2,8 @@ package pepjebs.mapatlases.mixin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,11 +28,6 @@ public abstract class LecternBlockEntityMixin extends BlockEntity implements Atl
 
     @Shadow abstract void onBookItemRemove();
 
-    @Shadow public abstract void setBook(ItemStack pStack);
-
-    @Shadow
-    int page;
-    @Shadow private int pageCount;
     @Unique
     private boolean mapatlases$hasAtlas = false;
 
@@ -68,6 +65,7 @@ public abstract class LecternBlockEntityMixin extends BlockEntity implements Atl
         return false;
     }
 
+    @Override
     public ItemStack mapatlases$removeAtlas(){
         this.mapatlases$hasAtlas = false;
         ItemStack atlas = this.book;
@@ -81,10 +79,8 @@ public abstract class LecternBlockEntityMixin extends BlockEntity implements Atl
         return this.saveWithoutMetadata();
     }
 
-
-
     @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 }

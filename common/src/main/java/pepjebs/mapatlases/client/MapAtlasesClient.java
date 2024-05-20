@@ -29,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import pepjebs.mapatlases.MapAtlasesMod;
 import pepjebs.mapatlases.client.screen.AtlasOverviewScreen;
-import pepjebs.mapatlases.config.MapAtlasesClientConfig;
 import pepjebs.mapatlases.item.MapAtlasItem;
 import pepjebs.mapatlases.map_collection.IMapCollection;
 import pepjebs.mapatlases.map_collection.MapKey;
@@ -101,6 +100,7 @@ public class MapAtlasesClient {
 
 
     private static final ThreadLocal<Float> globalDecorationScale = ThreadLocal.withInitial(() -> 1f);
+    private static final ThreadLocal<Float> globalDecorationTextScale = ThreadLocal.withInitial(() -> 1f);
     private static final ThreadLocal<Float> globalDecorationRotation = ThreadLocal.withInitial(() -> 0f);
 
     @Nullable
@@ -175,20 +175,6 @@ public class MapAtlasesClient {
         }
     }
 
-
-    @Deprecated(forRemoval = true)
-    public static float getWorldMapZoomLevel() {
-        return globalDecorationScale.get();
-    }
-
-    public static void setDecorationsScale(float i) {
-        globalDecorationScale.set(i);
-    }
-
-    public static void setDecorationRotation(float i) {
-        globalDecorationRotation.set(i);
-    }
-
     public static float getPredicateForAtlas(ItemStack stack, ClientLevel world, LivingEntity entity, int seed) {
         // Using ClientLevel will render default Atlas in inventories
         if (world == null && entity != null)
@@ -254,9 +240,8 @@ public class MapAtlasesClient {
     }
 
     public static void modifyTextDecorationTransform(PoseStack poseStack, float textWidth, float textScale) {
-        Float scale = globalDecorationScale.get();
+        Float scale = globalDecorationTextScale.get();
         if (scale != null) {
-            scale *= (float) (double) MapAtlasesClientConfig.markersTextScale.get();
             float s = textWidth * textScale / 2.0F;
             poseStack.translate(s, -4, 0);
 
@@ -270,7 +255,6 @@ public class MapAtlasesClient {
         }
     }
 
-
     public static void modifyDecorationTransform(PoseStack poseStack) {
         Float rot = globalDecorationRotation.get();
         if (rot != null) {
@@ -278,11 +262,26 @@ public class MapAtlasesClient {
         }
         Float scale = globalDecorationScale.get();
         if (scale != null) {
-            scale *= (float) (double) MapAtlasesClientConfig.markersScale.get();
             poseStack.scale(scale, scale, 1);
         }
     }
 
+    @Deprecated(forRemoval = true)
+    public static float getWorldMapZoomLevel() {
+        return globalDecorationScale.get();
+    }
+
+    public static void setDecorationsScale(float i) {
+        globalDecorationScale.set(i);
+    }
+
+    public static void setDecorationsTextScale(float i) {
+        globalDecorationTextScale.set(i);
+    }
+
+    public static void setDecorationRotation(float i) {
+        globalDecorationRotation.set(i);
+    }
 
     //debug stuff
     public static void debugMapUpdated(String mapId) {

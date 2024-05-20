@@ -1,1 +1,1 @@
-imprved map updating logic. could result in it playing better with mods modifying chunkloading
+added decoration text scale config
