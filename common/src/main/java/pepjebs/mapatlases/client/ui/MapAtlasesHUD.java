@@ -181,8 +181,8 @@ public class MapAtlasesHUD extends AbstractAtlasWidget {
 
         //rounds up if following player
         if (!followingPlayer) {
-            currentXCenter = currentXCenter % mapBlocksSize + Math.round(player.getX() / mapBlocksSize) * mapBlocksSize;
-            currentZCenter = currentZCenter % mapBlocksSize + Math.round(player.getZ() / mapBlocksSize) * mapBlocksSize;
+            currentXCenter = Math.floor((player.getX() + 64) / mapBlocksSize) * mapBlocksSize + (mapBlocksSize / 2f - 64);
+            currentZCenter = Math.floor((player.getZ() + 64) / mapBlocksSize) * mapBlocksSize + (mapBlocksSize / 2f - 64);
         } else {
             currentXCenter = player.getX();
             currentZCenter = player.getZ();
