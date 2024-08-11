@@ -118,7 +118,7 @@ public class MapAtlasesClient {
         currentActiveMapKey = null;
         if (!atlas.isEmpty()) {
             var maps = MapAtlasItem.getMaps(atlas, player.level());
-            maps.fixDuplicates(player.level());
+            maps.addNotSynced(player.level());
             Slice slice = MapAtlasItem.getSelectedSlice(atlas, player.level().dimension());
             // I hate this
             currentActiveMapKey = MapKey.at(maps.getScale(), player, slice);
@@ -228,7 +228,7 @@ public class MapAtlasesClient {
         ClientLevel level = Minecraft.getInstance().level;
         IMapCollection maps = MapAtlasItem.getMaps(atlas, level);
         //we arent ticking these so we have to fix duplicates
-        maps.fixDuplicates(level);
+        maps.addNotSynced(level);
         if (!maps.isEmpty()) {
             Minecraft.getInstance().setScreen(new AtlasOverviewScreen(atlas, lectern, pinOnly));
         }

@@ -150,8 +150,8 @@ public class MapAtlasesHUD extends AbstractAtlasWidget {
 
         int x = anchorLocation.isLeft ? off : (int) (screenWidth / (globalScale)) - (BG_SIZE + off);
         int y = anchorLocation.isUp ? off : (int) (screenHeight / (globalScale)) - (BG_SIZE + off);
-        x += MapAtlasesClientConfig.miniMapHorizontalOffset.get() / globalScale;
-        y += MapAtlasesClientConfig.miniMapVerticalOffset.get() / globalScale;
+        x += (int) (MapAtlasesClientConfig.miniMapHorizontalOffset.get() / globalScale);
+        y += (int) (MapAtlasesClientConfig.miniMapVerticalOffset.get() / globalScale);
 
         //TODO: fix rounding error when at non integer scales
         if (anchorLocation == Anchoring.UPPER_RIGHT) {
@@ -301,7 +301,8 @@ public class MapAtlasesHUD extends AbstractAtlasWidget {
             poseStack.pushPose();
             RenderSystem.enableDepthTest();
             poseStack.translate(x + BG_SIZE / 2f, y + BG_SIZE / 2f, -10);
-            ClientMarkers.drawSmallPins(graphics, font, currentXCenter + mapBlocksSize / 2f, currentZCenter + mapBlocksSize / 2f, currentMapKey.slice(),
+            ClientMarkers.drawSmallPins(graphics, font, currentXCenter + mapBlocksSize / 2f,
+                    currentZCenter + mapBlocksSize / 2f, currentMapKey.slice(),
                     mapBlocksSize * zoomLevel, player, rotatesWithPlayer);
             poseStack.popPose();
         }

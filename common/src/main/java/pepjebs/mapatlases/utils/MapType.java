@@ -13,6 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pepjebs.mapatlases.MapAtlasesMod;
 import pepjebs.mapatlases.integration.SupplementariesCompat;
@@ -103,7 +104,7 @@ public enum MapType {
         return data == null ? null : Pair.of(key, data);
     }
 
-    public Integer getHeight(MapItemSavedData data) {
+    public Integer getHeight(@NotNull MapItemSavedData data) {
         return switch (this) {
             case VANILLA -> MapAtlasesMod.SUPPLEMENTARIES ? SupplementariesCompat.getSlice(data) : null;
             case MAZE, ORE_MAZE -> MapAtlasesMod.TWILIGHTFOREST ? TwilightForestCompat.getSlice(data) : null;

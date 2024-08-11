@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import org.jetbrains.annotations.NotNull;
 
 public class SupplementariesCompat {
 
@@ -21,7 +22,7 @@ public class SupplementariesCompat {
         MapLightHandler.setActive(true);
     }
 
-    public static Integer getSlice(MapItemSavedData data) {
+    public static Integer getSlice(@NotNull MapItemSavedData data) {
         int i = SliceMapItem.getMapHeight(data);
         return i == Integer.MAX_VALUE ? null : i;
     }

@@ -12,4 +12,5 @@ public class PinDecorationRenderer extends AtlasOnlyDecorationRenderer<PinDecora
     protected boolean hasOutline(PinDecoration decoration) {
         return decoration.isFocused();
     }
+
 }

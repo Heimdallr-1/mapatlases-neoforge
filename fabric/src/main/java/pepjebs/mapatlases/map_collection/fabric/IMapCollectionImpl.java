@@ -151,6 +151,13 @@ public class IMapCollectionImpl extends ItemComponent implements IMapCollection 
     }
 
     @Override
+    public void addNotSynced(Level level) {
+        if (instance != null) {
+            instance.addNotSynced(level);
+        }
+    }
+
+    @Override
     public boolean hasOneSlice() {
         return instance != null && instance.hasOneSlice();
     }

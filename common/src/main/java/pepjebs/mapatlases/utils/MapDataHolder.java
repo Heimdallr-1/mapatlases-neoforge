@@ -1,5 +1,6 @@
 package pepjebs.mapatlases.utils;
 
+import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -7,6 +8,7 @@ import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapBanner;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pepjebs.mapatlases.MapAtlasesMod;
 import pepjebs.mapatlases.config.MapAtlasesConfig;
@@ -32,11 +34,12 @@ public class MapDataHolder {
     @Nullable
     public final Integer height;
 
-    public MapDataHolder(String name, MapItemSavedData data) {
+    public MapDataHolder(String name, @NotNull MapItemSavedData data) {
         this(MapAtlasesAccessUtils.findMapIntFromString(name), name, data);
     }
 
-    private MapDataHolder(int id, String stringId, MapItemSavedData data) {
+    private MapDataHolder(int id, String stringId, @NotNull MapItemSavedData data) {
+        Preconditions.checkNotNull(data);
         this.id = id;
         this.stringId = stringId;
         this.data = data;

@@ -6,12 +6,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
-import pepjebs.mapatlases.utils.MapAtlasesAccessUtils;
+import pepjebs.mapatlases.MapAtlasesMod;
 import pepjebs.mapatlases.utils.MapDataHolder;
 import pepjebs.mapatlases.utils.MapType;
 import pepjebs.mapatlases.utils.Slice;
@@ -19,8 +17,8 @@ import pepjebs.mapatlases.utils.Slice;
 import java.util.*;
 import java.util.function.Predicate;
 
-// The porpoise of this object is to save a datastructures with all available maps so we dont have to keep deserializing nbt
-public class MapCollection implements IMapCollection{
+// The purpose of this object is to save a datastructures with all available maps so we dont have to keep deserializing nbt
+public class MapCollection implements IMapCollection {
 
 
     public static final String MAP_LIST_NBT = "maps";
@@ -31,7 +29,8 @@ public class MapCollection implements IMapCollection{
     private final Map<ResourceKey<Level>, Map<MapType, TreeSet<Integer>>> dimensionSlices = new HashMap<>();
     private byte scale = 0;
     private CompoundTag lazyNbt = null;
-    private final Set<Integer> duplicates = new HashSet<>();
+    // list of ids that have not been received yet
+    private final Set<Integer> notSyncedIds = new HashSet<>();
 
 
     public boolean isInitialized() {
@@ -42,9 +41,10 @@ public class MapCollection implements IMapCollection{
         Preconditions.checkState(this.lazyNbt == null, "map collection capability was not initialized");
     }
 
-    // if a duplicate exists its likely that its data was somehow not synced yet
-    public void fixDuplicates(Level level) {
-        duplicates.removeIf(i -> add(i, level));
+    // if a duplicate exists its likely that its data was not synced yet
+    @Override
+    public void addNotSynced(Level level) {
+        notSyncedIds.removeIf(i -> add(i, level));
     }
 
     // we need leven context
@@ -102,18 +102,15 @@ public class MapCollection implements IMapCollection{
 
         if (found == null) {
             if (level instanceof ServerLevel) {
-                // Create a default map if server doesnt have it. Should never happen
-                ItemStack map = MapAtlasesAccessUtils.createMapItemStackFromId(intId);
-                MapItemSavedData d = MapItem.getSavedData(map, level);
-                String mapString = MapItem.makeKey(MapItem.getMapId(map));
-                found = new MapDataHolder(mapString, d);
+                MapAtlasesMod.LOGGER.error("Map with id {} not found in level {}", intId, level.dimension().location());
             } else {
-                //wait till we reiceie data from server
+                //wait till we receive data from server
                 ids.add(intId);
-                if (!duplicates.contains(intId)) duplicates.add(intId);
-                return false;
+                notSyncedIds.add(intId);
             }
+            return false;
         }
+
         MapItemSavedData d = found.data;
 
         if (d != null && d.scale == scale) {
@@ -121,17 +118,8 @@ public class MapCollection implements IMapCollection{
 
             //from now on we assume that all client maps cant have their center and data unfilled
             if (maps.containsKey(key)) {
-                if (true) return false;
-                //remove duplicates
-
-                //this should not happen anymire actually
-                var old = maps.get(key);
-                ids.add(intId);
-                if (!duplicates.contains(intId)) duplicates.add(intId);
+                MapAtlasesMod.LOGGER.error("Duplicate map key {} found in level {}", key, level.dimension().location());
                 return false;
-                //if we reach here something went wrong. likely extra map data not being received yet. TODO: fix
-                //we just store the map id without actually adding it as its map key is incorrect
-                //error
 
             }
             ids.add(intId);

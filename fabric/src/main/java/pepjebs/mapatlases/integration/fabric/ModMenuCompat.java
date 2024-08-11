@@ -6,6 +6,7 @@ import net.mehvahdjukaar.moonlight.api.platform.configs.fabric.FabricConfigListS
 import net.minecraft.network.chat.Component;
 import pepjebs.mapatlases.MapAtlasesMod;
 import pepjebs.mapatlases.config.MapAtlasesClientConfig;
+import pepjebs.mapatlases.config.MapAtlasesConfig;
 
 public class ModMenuCompat implements ModMenuApi {
 
@@ -14,7 +15,7 @@ public class ModMenuCompat implements ModMenuApi {
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return s -> new FabricConfigListScreen(MapAtlasesMod.MOD_ID, MapAtlasesMod.MAP_ATLAS.get().getDefaultInstance(),
                 Component.literal("§6Map Atlases Configs"), null,
-                s, MapAtlasesClientConfig.SPEC, MapAtlasesClientConfig.SPEC);
+                s, MapAtlasesClientConfig.SPEC, MapAtlasesConfig.SPEC);
     }
 
 }

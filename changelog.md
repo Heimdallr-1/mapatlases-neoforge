@@ -1,1 +1,1 @@
-added decoration text scale config
+fixed some minor random issues
