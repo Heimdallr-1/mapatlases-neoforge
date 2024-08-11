@@ -35,10 +35,7 @@ import pepjebs.mapatlases.map_collection.MapKey;
 import pepjebs.mapatlases.networking.C2SSelectSlicePacket;
 import pepjebs.mapatlases.networking.C2STakeAtlasPacket;
 import pepjebs.mapatlases.networking.MapAtlasesNetworking;
-import pepjebs.mapatlases.utils.DecorationHolder;
-import pepjebs.mapatlases.utils.MapDataHolder;
-import pepjebs.mapatlases.utils.MapType;
-import pepjebs.mapatlases.utils.Slice;
+import pepjebs.mapatlases.utils.*;
 
 import java.util.*;
 
@@ -84,8 +81,9 @@ public class AtlasOverviewScreen extends Screen {
     private Pair<MapDataHolder, ColumnPos> partialPin = null;
     private PinButton pinButton;
 
-    public AtlasOverviewScreen(ItemStack atlas) {
-        this(atlas, null, false);
+    // for fancy menu or something
+    public AtlasOverviewScreen() {
+        this(MapAtlasesAccessUtils.getAtlasFromPlayerByConfig(Minecraft.getInstance().player), null, false);
     }
 
     public AtlasOverviewScreen(ItemStack atlas, @Nullable LecternBlockEntity lectern, boolean placingPin) {
@@ -329,7 +327,7 @@ public class AtlasOverviewScreen extends Screen {
                     256
             );
 
-            poseStack.translate(0,0,1);
+            poseStack.translate(0, 0, 1);
             //background overlay
             graphics.blit(
                     texture,
@@ -618,7 +616,7 @@ public class AtlasOverviewScreen extends Screen {
         IMapCollection maps = MapAtlasItem.getMaps(atlas, level);
         ResourceKey<Level> dim = selectedSlice.dimension();
         var slices = new ArrayList<>(maps.getAvailableTypes(dim));
-        if(!slices.isEmpty()) {
+        if (!slices.isEmpty()) {
             int index = slices.indexOf(selectedSlice.type());
             index = (index + 1) % slices.size();
             MapType type = slices.get(index);
