@@ -72,7 +72,7 @@ public class ClientMarkers {
             var path = getDataPath(levelName, QuickPlayLog.Type.SINGLEPLAYER);
             Files.deleteIfExists(path);
         } catch (Exception e) {
-            MapAtlasesMod.LOGGER.error("Could not delete client markers saved data of world " + levelName, e);
+            MapAtlasesMod.LOGGER.error("Could not delete client markers saved data of world {}", levelName, e);
         }
     }
 
@@ -115,7 +115,7 @@ public class ClientMarkers {
             }
 
         } catch (Exception e) {
-            MapAtlasesMod.LOGGER.error("Could not save client markers saved data at " + currentPath, e);
+            MapAtlasesMod.LOGGER.error("Could not save client markers saved data at {}", currentPath, e);
         }
         markers.clear();
     }
